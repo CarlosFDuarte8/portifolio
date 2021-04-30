@@ -1,8 +1,8 @@
 import React from "react";
 import imageOverlay from "../img/earth.jpg";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {github, faGift} from '@fortawesome/free-solid-svg-icons';
-import { fab } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 class Contact extends React.Component {
   render() {
@@ -29,7 +29,8 @@ class Contact extends React.Component {
                           className="contactForm"
                         >
                           <div id="sendmessage">
-                            Sua mensagem fou recebida, logo entrarei em contato. Obrigado!
+                            Sua mensagem fou recebida, logo entrarei em contato.
+                            Obrigado!
                           </div>
                           <div id="errormessage"></div>
                           <div className="row">
@@ -105,9 +106,11 @@ class Contact extends React.Component {
                       </div>
                       <div className="more-info">
                         <p className="lead">
-                        Deixe seu recado, 
-                        ou mande um e-mail: <a href="mailto:carlosf.duarte8@gmail.com">
-                          carlosf.duarte8@gmail.com</a>.
+                          Deixe seu recado, ou mande um e-mail:{" "}
+                          <a href="mailto:carlosf.duarte8@gmail.com">
+                            carlosf.duarte8@gmail.com
+                          </a>
+                          .
                           <br />
                           Basta preencher o formulário ou enviar-me um e-mail.
                         </p>
@@ -126,8 +129,7 @@ class Contact extends React.Component {
                               rel="noopener noreferrer"
                             >
                               <span className="ico-circle">
-                              <FontAwesomeIcon icon={faGift} />
-                                <i className="ion-social-codepen"></i>
+                                <FontAwesomeIcon icon={faGithub} />
                               </span>
                             </a>
                           </li>
@@ -138,7 +140,7 @@ class Contact extends React.Component {
                               rel="noopener noreferrer"
                             >
                               <span className="ico-circle">
-                              <FontAwesomeIcon icon={["fab", "github"]} />
+                                <FontAwesomeIcon icon={faLinkedin} />
                               </span>
                             </a>
                           </li>
@@ -149,9 +151,8 @@ class Contact extends React.Component {
                               rel="noopener noreferrer"
                             >
                               <span className="ico-circle">
-                              <FontAwesomeIcon icon="coffee" size="6x" />
+                                <FontAwesomeIcon icon={faEnvelope} />
                               </span>
-                              
                             </a>
                           </li>
                         </ul>
@@ -163,7 +164,6 @@ class Contact extends React.Component {
             </div>
           </div>
         </div>
-        
       </section>
     );
   }
