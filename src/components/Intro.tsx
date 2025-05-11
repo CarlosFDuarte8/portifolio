@@ -108,6 +108,46 @@ const IntroSubtitle = styled.p`
   }
 `;
 
+const ButtonWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+
+  &:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+`;
+
+const Tooltip = styled.span`
+  visibility: hidden;
+  width: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: ${props => props.theme.colors.white};
+  text-align: center;
+  border-radius: ${props => props.theme.borderRadius.small};
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.md};
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: ${props => props.theme.fontSizes.small};
+  white-space: nowrap;
+  
+  &:after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+  }
+`;
+
 const Button = styled.a`
   display: inline-block;
   background-color: ${props => props.theme.colors.primary};
@@ -153,7 +193,10 @@ class Intro extends React.Component {
               />
             </strong>
           </IntroSubtitle>
-          <Button href="#about">Sobre</Button>
+          <ButtonWrapper>
+            <Button href="#about">Sobre</Button>
+            <Tooltip className="tooltip">Saiba mais sobre mim</Tooltip>
+          </ButtonWrapper>
         </ContentContainer>
       </IntroContainer>
     );
