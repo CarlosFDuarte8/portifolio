@@ -19,6 +19,7 @@ const IntroContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 80px; /* Adicionando espaço para a navbar fixa */
 `;
 
 // Fixed box-shadow with proper TypeScript typing

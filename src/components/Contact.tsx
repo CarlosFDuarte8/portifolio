@@ -8,7 +8,8 @@ import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 // Componentes estilizados
 const ContactSection = styled.section`
   position: relative;
-  padding: ${props => props.theme.spacing.xxl} 0;
+  padding-top: calc(${props => props.theme.spacing.xxl} + 80px); /* Adicionando espaço extra para a navbar fixa */
+  padding-bottom: ${props => props.theme.spacing.xxl};
   background-image: url(${imageOverlay});
   background-size: cover;
   background-attachment: fixed;

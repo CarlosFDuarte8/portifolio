@@ -5,8 +5,10 @@ import react from '../logo.svg';
 
 // Componentes estilizados
 const AboutSection = styled.section`
-  padding: ${props => props.theme.spacing.xxl} 0;
+  padding-top: calc(${props => props.theme.spacing.xxl} + 80px); /* Adicionando espaço extra para a navbar fixa */
+  padding-bottom: ${props => props.theme.spacing.xxl};
   background-color: ${props => props.theme.colors.light};
+  margin-top: -80px; /* Compensar para a visualização correta com a navbar fixa */
 `;
 
 const Container = styled.div`

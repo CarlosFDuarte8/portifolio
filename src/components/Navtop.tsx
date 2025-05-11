@@ -2,13 +2,24 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import perfil from '../img/perfil.png';
 
-const NavbarContainer = styled.nav`
+interface NavbarContainerProps {
+  scrolled: boolean;
+}
+
+const NavbarContainer = styled.nav<NavbarContainerProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.xl};
-  background-color: ${props => props.theme.colors.light};
-  box-shadow: ${props => props.theme.boxShadow.small};
+  padding: ${props => props.scrolled ? props.theme.spacing.sm : props.theme.spacing.md} ${props => props.theme.spacing.xl};
+  background-color: ${props => props.scrolled ? props.theme.colors.white : props.theme.colors.light};
+  box-shadow: ${props => props.scrolled ? props.theme.boxShadow.medium : props.theme.boxShadow.small};
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: all ${props => props.theme.transitions.fast};
 `;
 
 const Logo = styled.img`
@@ -93,15 +104,33 @@ const NavLink = styled.a`
 
 interface NavtopState {
   isOpen: boolean;
+  scrolled: boolean;
 }
 
 class Navtop extends Component<{}, NavtopState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      scrolled: false
     };
   }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll = () => {
+    if (window.scrollY > 50) {
+      this.setState({ scrolled: true });
+    } else {
+      this.setState({ scrolled: false });
+    }
+  };
 
   toggleMenu = () => {
     this.setState(prevState => ({
@@ -111,7 +140,7 @@ class Navtop extends Component<{}, NavtopState> {
 
   render() {
     return (
-      <NavbarContainer>
+      <NavbarContainer scrolled={this.state.scrolled}>
         <Logo src={perfil} alt="Logo" />
         <MenuToggle onClick={this.toggleMenu}>
           <ToggleBar />
