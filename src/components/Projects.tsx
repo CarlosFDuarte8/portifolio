@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faGooglePlay, faAppStoreIos } from "@fortawesome/free-brands-svg-icons";
 import { faExternalLinkAlt, faCode, faLaptopCode, faImage } from "@fortawesome/free-solid-svg-icons";
 import logo from '../logo.svg'; // Imagem de fallback para projetos sem imagem
+import { useTranslation } from 'react-i18next'; // Importando hook de tradução
 
 // Componentes estilizados
 const ProjectsSection = styled.section`
@@ -212,12 +213,14 @@ interface Project {
 }
 
 const Projects: React.FC = () => {
+  const { t } = useTranslation(); // Hook de tradução
+  
   // Lista de projetos
   const projects: Project[] = [
     {
       id: "noar-health",
-      title: "Noar Health",
-      description: "Aplicativo de saúde e bem-estar, desenvolvido com React Native para Android e iOS. Permite que usuários acompanhem sua saúde e tenham acesso a profissionais qualificados.",
+      title: t('projects.projectList.noarHealth.title'),
+      description: t('projects.projectList.noarHealth.description'),
       image: "https://play-lh.googleusercontent.com/Kx0_1aTIlb4PtVWLCb_t5cCp8ROBn9xwVBQ9VRy261ZLyXKnEL8TjYH4TN1g6M4yFMom=w240-h480-rw",
       tags: ["React Native", "Android", "iOS", "JavaScript", "Firebase"],
       links: {
@@ -227,8 +230,8 @@ const Projects: React.FC = () => {
     },
     {
       id: "portfolio",
-      title: "Portfólio Pessoal",
-      description: "Meu site de portfólio desenvolvido com React, TypeScript e Styled Components. Um projeto que demonstra minhas habilidades e projetos recentes.",
+      title: t('projects.projectList.portfolio.title'),
+      description: t('projects.projectList.portfolio.description'),
       image: "/logo512.png",
       tags: ["React", "TypeScript", "Styled Components", "Responsive Design"],
       links: {
@@ -238,8 +241,8 @@ const Projects: React.FC = () => {
     },
     {
       id: "ecommerce",
-      title: "Loja Virtual",
-      description: "Plataforma de e-commerce completa com painel administrativo, pagamentos online e gestão de estoque. Criada com Node.js no backend e React no frontend.",
+      title: t('projects.projectList.ecommerce.title'),
+      description: t('projects.projectList.ecommerce.description'),
       image: "https://via.placeholder.com/400x200?text=E-commerce+Project",
       tags: ["Node.js", "React", "MongoDB", "Express", "Redux"],
       links: {
@@ -263,11 +266,9 @@ const Projects: React.FC = () => {
   return (
     <ProjectsSection id="projects">
       <Container>
-        <SectionTitle>Meus Projetos</SectionTitle>
+        <SectionTitle>{t('projects.title')}</SectionTitle>
         <ProjectsIntro>
-          Aqui estão alguns dos projetos que desenvolvi recentemente. 
-          Cada projeto representa um desafio único e uma oportunidade de aprendizado, 
-          utilizando diferentes tecnologias e abordagens para criar soluções eficientes.
+          {t('projects.intro')}
         </ProjectsIntro>
         
         <ProjectsGrid>
@@ -297,22 +298,22 @@ const Projects: React.FC = () => {
                 <ProjectLinks>
                   {project.links.github && (
                     <ProjectLink href={project.links.github} target="_blank" rel="noopener noreferrer">
-                      <FontAwesomeIcon icon={faGithub} /> GitHub
+                      <FontAwesomeIcon icon={faGithub} /> {t('projects.github')}
                     </ProjectLink>
                   )}
                   {project.links.live && (
                     <ProjectLink href={project.links.live} target="_blank" rel="noopener noreferrer">
-                      <FontAwesomeIcon icon={faExternalLinkAlt} /> Demo
+                      <FontAwesomeIcon icon={faExternalLinkAlt} /> {t('projects.live')}
                     </ProjectLink>
                   )}
                   {project.links.android && (
                     <ProjectLink href={project.links.android} target="_blank" rel="noopener noreferrer">
-                      <FontAwesomeIcon icon={faGooglePlay} /> Android
+                      <FontAwesomeIcon icon={faGooglePlay} /> {t('projects.android')}
                     </ProjectLink>
                   )}
                   {project.links.ios && (
                     <ProjectLink href={project.links.ios} target="_blank" rel="noopener noreferrer">
-                      <FontAwesomeIcon icon={faAppStoreIos} /> iOS
+                      <FontAwesomeIcon icon={faAppStoreIos} /> {t('projects.ios')}
                     </ProjectLink>
                   )}
                 </ProjectLinks>

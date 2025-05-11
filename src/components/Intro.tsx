@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes, css, createGlobalStyle } from "styled-components"; // Adicionando createGlobalStyle
 import Typed from "react-typed";
+import { useTranslation } from 'react-i18next'; // Importando hook de tradução
 
 // Animações para os elementos
 const animateTwinkle = keyframes`
@@ -682,6 +683,8 @@ const PrimaryButton = styled(Button)`
 `;
 
 const Intro = () => {
+  const { t } = useTranslation(); // Hook de tradução
+  
   // Estado para controlar animações e efeitos especiais
   const [shootingStar1Visible, setShootingStar1Visible] = useState(true);
   const [shootingStar2Visible, setShootingStar2Visible] = useState(false);
@@ -815,6 +818,7 @@ const Intro = () => {
             <strong className="text-slider">
               <Typed
                 strings={[
+                  t('intro.title'),
                   "Desenvolvedor Front End",
                   "Desenvolvedor Back End",
                   "Desenvolvedor Full Stack"
@@ -827,16 +831,15 @@ const Intro = () => {
             </strong>
           </IntroSubtitle>
           <IntroDescription>
-            Criando soluções elegantes e funcionais com tecnologias web modernas.
-            Transformando ideias em experiências digitais extraordinárias.
+            {t('intro.description')}
           </IntroDescription>
           <ButtonsContainer>
             <ButtonWrapper>
-              <PrimaryButton href="#about" primary>Sobre Mim</PrimaryButton>
+              <PrimaryButton href="#about" primary>{t('nav.about')}</PrimaryButton>
               <Tooltip className="tooltip">Conheça minha trajetória</Tooltip>
             </ButtonWrapper>
             <ButtonWrapper>
-              <Button href="#contact">Contato</Button>
+              <Button href="#contact">{t('nav.contact')}</Button>
               <Tooltip className="tooltip">Vamos conversar!</Tooltip>
             </ButtonWrapper>
           </ButtonsContainer>

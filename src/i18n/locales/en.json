@@ -1,0 +1,63 @@
+{
+  "general": {
+    "language": "English",
+    "changeLanguage": "Switch to Portuguese"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "intro": {
+    "greeting": "Hello, I am",
+    "title": "Full Stack Developer",
+    "description": "Passionate about creating web and mobile solutions that make a difference.",
+    "cta": "See my work"
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "Learn a bit about my journey",
+    "bio": "I am a full stack developer passionate about technology and innovation. I work with web and mobile development, creating efficient and intuitive solutions.",
+    "skills": "Skills",
+    "experience": "Experience",
+    "education": "Education"
+  },
+  "projects": {
+    "title": "My Projects",
+    "intro": "Here are some of the projects I've recently developed. Each project represents a unique challenge and a learning opportunity, using different technologies and approaches to create efficient solutions.",
+    "live": "Demo",
+    "github": "GitHub",
+    "android": "Android",
+    "ios": "iOS",
+    "projectList": {
+      "noarHealth": {
+        "title": "Noar Health",
+        "description": "Health and wellness app, developed with React Native for Android and iOS. Allows users to track their health and access qualified professionals."
+      },
+      "portfolio": {
+        "title": "Personal Portfolio",
+        "description": "My portfolio website developed with React, TypeScript and Styled Components. A project that showcases my skills and recent projects."
+      },
+      "ecommerce": {
+        "title": "Online Store",
+        "description": "Complete e-commerce platform with admin panel, online payments and inventory management. Created with Node.js on the backend and React on the frontend."
+      }
+    }
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Let's work together?",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "Your email",
+    "messagePlaceholder": "Your message",
+    "sendButton": "Send Message",
+    "successMessage": "Message sent successfully!",
+    "errorMessage": "An error occurred. Please try again."
+  },
+  "footer": {
+    "copyright": "All rights reserved",
+    "madeWith": "Made with",
+    "by": "by"
+  }
+}

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled, { keyframes, css } from "styled-components";
 import perfil from '../img/perfil.png';
+import { withTranslation, WithTranslation } from 'react-i18next'; // Importando withTranslation
 
 interface NavbarContainerProps {
   scrolled: boolean;
@@ -185,8 +186,8 @@ interface NavtopState {
   activeSection: string;
 }
 
-class Navtop extends Component<{}, NavtopState> {
-  constructor(props: {}) {
+class Navtop extends Component<WithTranslation, NavtopState> {
+  constructor(props: WithTranslation) {
     super(props);
     this.state = {
       isOpen: false,
@@ -263,6 +264,7 @@ class Navtop extends Component<{}, NavtopState> {
 
   render() {
     const { scrolled, isOpen, activeSection } = this.state;
+    const { t } = this.props; // Hook de tradução
     
     return (
       <NavbarContainer scrolled={scrolled}>
@@ -275,16 +277,24 @@ class Navtop extends Component<{}, NavtopState> {
         <NavbarCollapse isOpen={isOpen}>
           <NavbarNav>
             <NavItem>
-              <NavLink href="#home" active={activeSection === 'home'} onClick={this.handleLinkClick}>Home</NavLink>
+              <NavLink href="#home" active={activeSection === 'home'} onClick={this.handleLinkClick}>
+                {t('nav.home')}
+              </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#about" active={activeSection === 'about'} onClick={this.handleLinkClick}>Sobre</NavLink>
+              <NavLink href="#about" active={activeSection === 'about'} onClick={this.handleLinkClick}>
+                {t('nav.about')}
+              </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#projects" active={activeSection === 'projects'} onClick={this.handleLinkClick}>Projetos</NavLink>
+              <NavLink href="#projects" active={activeSection === 'projects'} onClick={this.handleLinkClick}>
+                {t('nav.projects')}
+              </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#contact" active={activeSection === 'contact'} onClick={this.handleLinkClick}>Contato</NavLink>
+              <NavLink href="#contact" active={activeSection === 'contact'} onClick={this.handleLinkClick}>
+                {t('nav.contact')}
+              </NavLink>
             </NavItem>
           </NavbarNav>
         </NavbarCollapse>
@@ -293,4 +303,4 @@ class Navtop extends Component<{}, NavtopState> {
   }
 }
 
-export default Navtop;
+export default withTranslation()(Navtop); // Usando withTranslation para componente de classe

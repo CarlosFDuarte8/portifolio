@@ -1,0 +1,63 @@
+{
+  "general": {
+    "language": "Português",
+    "changeLanguage": "Mudar para inglês"
+  },
+  "nav": {
+    "home": "Início",
+    "about": "Sobre",
+    "projects": "Projetos",
+    "contact": "Contato"
+  },
+  "intro": {
+    "greeting": "Olá, eu sou",
+    "title": "Desenvolvedor Full Stack",
+    "description": "Apaixonado por criar soluções web e móveis que fazem a diferença.",
+    "cta": "Conheça meu trabalho"
+  },
+  "about": {
+    "title": "Sobre Mim",
+    "subtitle": "Conheça um pouco da minha história",
+    "bio": "Sou um desenvolvedor full stack apaixonado por tecnologia e inovação. Trabalho com desenvolvimento web e mobile, criando soluções eficientes e intuitivas.",
+    "skills": "Habilidades",
+    "experience": "Experiência",
+    "education": "Educação"
+  },
+  "projects": {
+    "title": "Meus Projetos",
+    "intro": "Aqui estão alguns dos projetos que desenvolvi recentemente. Cada projeto representa um desafio único e uma oportunidade de aprendizado, utilizando diferentes tecnologias e abordagens para criar soluções eficientes.",
+    "live": "Demo",
+    "github": "GitHub",
+    "android": "Android",
+    "ios": "iOS",
+    "projectList": {
+      "noarHealth": {
+        "title": "Noar Health",
+        "description": "Aplicativo de saúde e bem-estar, desenvolvido com React Native para Android e iOS. Permite que usuários acompanhem sua saúde e tenham acesso a profissionais qualificados."
+      },
+      "portfolio": {
+        "title": "Portfólio Pessoal",
+        "description": "Meu site de portfólio desenvolvido com React, TypeScript e Styled Components. Um projeto que demonstra minhas habilidades e projetos recentes."
+      },
+      "ecommerce": {
+        "title": "Loja Virtual",
+        "description": "Plataforma de e-commerce completa com painel administrativo, pagamentos online e gestão de estoque. Criada com Node.js no backend e React no frontend."
+      }
+    }
+  },
+  "contact": {
+    "title": "Entre em Contato",
+    "subtitle": "Vamos trabalhar juntos?",
+    "namePlaceholder": "Seu nome",
+    "emailPlaceholder": "Seu email",
+    "messagePlaceholder": "Sua mensagem",
+    "sendButton": "Enviar Mensagem",
+    "successMessage": "Mensagem enviada com sucesso!",
+    "errorMessage": "Ocorreu um erro. Tente novamente."
+  },
+  "footer": {
+    "copyright": "Todos os direitos reservados",
+    "madeWith": "Feito com",
+    "by": "por"
+  }
+}
