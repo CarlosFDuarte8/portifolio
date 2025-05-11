@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import styled from "styled-components";
 import imageOverlay from "../img/earth.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faGithub, faLinkedin, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope, faCheckCircle, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 // Componentes estilizados
 const ContactSection = styled.section`
@@ -39,6 +39,13 @@ const ContentBox = styled.div`
   border-radius: ${props => props.theme.borderRadius.medium};
   box-shadow: ${props => props.theme.boxShadow.medium};
   padding: ${props => props.theme.spacing.xl};
+  overflow: hidden;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: ${props => props.theme.boxShadow.large};
+    transform: translateY(-5px);
+  }
 `;
 
 const FlexRow = styled.div`
@@ -64,6 +71,7 @@ const Title = styled.h5`
   margin-bottom: ${props => props.theme.spacing.lg};
   position: relative;
   padding-bottom: ${props => props.theme.spacing.sm};
+  color: ${props => props.theme.colors.primaryDark};
 
   &::after {
     content: "";
@@ -73,6 +81,11 @@ const Title = styled.h5`
     width: 50px;
     height: 3px;
     background-color: ${props => props.theme.colors.primary};
+    transition: width 0.3s ease;
+  }
+  
+  &:hover::after {
+    width: 100px;
   }
 `;
 
@@ -82,6 +95,7 @@ const Form = styled.form`
 
 const FormGroup = styled.div`
   margin-bottom: ${props => props.theme.spacing.lg};
+  position: relative;
 `;
 
 const Input = styled.input`
@@ -90,11 +104,16 @@ const Input = styled.input`
   border: 1px solid #ced4da;
   border-radius: ${props => props.theme.borderRadius.small};
   font-size: ${props => props.theme.fontSizes.medium};
+  transition: all 0.3s ease;
 
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.primary};
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  &:hover {
+    border-color: ${props => props.theme.colors.primary};
   }
 `;
 
@@ -105,11 +124,16 @@ const TextArea = styled.textarea`
   border-radius: ${props => props.theme.borderRadius.small};
   font-size: ${props => props.theme.fontSizes.medium};
   min-height: 150px;
+  transition: all 0.3s ease;
 
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.primary};
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  &:hover {
+    border-color: ${props => props.theme.colors.primary};
   }
 `;
 
@@ -123,6 +147,10 @@ const SubmitButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   transition: all ${props => props.theme.transitions.medium};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 
   &:hover {
     background-color: ${props => props.theme.colors.primaryDark};
@@ -134,19 +162,40 @@ const SubmitButton = styled.button`
     transform: translateY(-1px);
     box-shadow: ${props => props.theme.boxShadow.medium};
   }
+  
+  &:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
 `;
 
 const LeadText = styled.p`
   font-size: ${props => props.theme.fontSizes.large};
-  line-height: 1.6;
+  line-height: 1.8;
   margin-bottom: ${props => props.theme.spacing.xl};
+  color: #495057;
 
   a {
     color: ${props => props.theme.colors.primary};
     text-decoration: none;
+    position: relative;
+    font-weight: 500;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: ${props => props.theme.colors.primary};
+      transition: width 0.3s ease;
+    }
 
-    &:hover {
-      text-decoration: underline;
+    &:hover::after {
+      width: 100%;
     }
   }
 `;
@@ -156,10 +205,12 @@ const SocialLinks = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+  flex-wrap: wrap;
 `;
 
 const SocialItem = styled.li`
   margin-right: ${props => props.theme.spacing.md};
+  margin-bottom: ${props => props.theme.spacing.md};
 `;
 
 const SocialLink = styled.a`
@@ -167,34 +218,172 @@ const SocialLink = styled.a`
   text-decoration: none;
 `;
 
+const SocialLabel = styled.span`
+  display: block;
+  text-align: center;
+  margin-top: 5px;
+  font-size: ${props => props.theme.fontSizes.small};
+  color: ${props => props.theme.colors.gray};
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+`;
+
+const SocialItemWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  &:hover ${SocialLabel} {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(3px);
+  }
+`;
+
 const IconCircle = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: ${props => props.theme.borderRadius.circle};
   background-color: ${props => props.theme.colors.primary};
   color: ${props => props.theme.colors.white};
   font-size: ${props => props.theme.fontSizes.xlarge};
   transition: all ${props => props.theme.transitions.medium};
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   &:hover {
     background-color: ${props => props.theme.colors.primaryDark};
-    transform: scale(1.1);
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   }
 `;
 
-class Contact extends React.Component {
-  render() {
-    return (
-      <ContactSection id="contact">
-        <Container>
-          <ContentBox>
-            <FlexRow>
-              <Column>
-                <Title>Preencha o formulário</Title>
-                <Form action="https://formspree.io/f/mpzovejy" method="POST">
+const SuccessMessage = styled.div`
+  background-color: #d4edda;
+  color: #155724;
+  padding: ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.small};
+  margin-bottom: ${props => props.theme.spacing.lg};
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  animation: fadeIn 0.5s ease;
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+
+const ContactInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: ${props => props.theme.spacing.xl};
+`;
+
+const ContactItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: ${props => props.theme.spacing.sm} 0;
+  
+  svg {
+    color: ${props => props.theme.colors.primary};
+  }
+`;
+
+const Contact = () => {
+  const [formStatus, setFormStatus] = useState({
+    submitted: false,
+    submitting: false,
+    info: { error: false, msg: null as string | null }
+  });
+  
+  const [inputs, setInputs] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  
+  const handleServerResponse = (ok: boolean, msg: string) => {
+    if (ok) {
+      setFormStatus({
+        submitted: true,
+        submitting: false,
+        info: { error: false, msg }
+      });
+      setInputs({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+    } else {
+      setFormStatus({
+        submitted: false,
+        submitting: false,
+        info: { error: true, msg }
+      });
+    }
+  };
+  
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInputs(prev => ({
+      ...prev,
+      [e.target.id]: e.target.value
+    }));
+  };
+  
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormStatus(prevStatus => ({ ...prevStatus, submitting: true }));
+    
+    const formData = new FormData();
+    Object.entries(inputs).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    
+    fetch('https://formspree.io/f/mpzovejy', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(response => {
+        handleServerResponse(true, 'Obrigado pela sua mensagem! Entrarei em contato em breve.');
+      })
+      .catch(error => {
+        handleServerResponse(false, error.message);
+      });
+  };
+
+  return (
+    <ContactSection id="contact">
+      <Container>
+        <ContentBox>
+          <FlexRow>
+            <Column>
+              <Title>Entre em contato</Title>
+              {formStatus.submitted ? (
+                <SuccessMessage>
+                  <FontAwesomeIcon icon={faCheckCircle} />
+                  Mensagem enviada com sucesso! Obrigado pelo contato.
+                </SuccessMessage>
+              ) : (
+                <Form onSubmit={handleSubmit}>
+                  {formStatus.info.error && (
+                    <div style={{ color: "red", marginBottom: "15px" }}>
+                      {formStatus.info.msg}
+                    </div>
+                  )}
                   <FormGroup>
                     <Input
                       type="text"
@@ -202,6 +391,8 @@ class Contact extends React.Component {
                       id="name"
                       placeholder="Seu nome"
                       required
+                      value={inputs.name}
+                      onChange={handleChange}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -211,6 +402,8 @@ class Contact extends React.Component {
                       id="email"
                       placeholder="Seu e-mail"
                       required
+                      value={inputs.email}
+                      onChange={handleChange}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -220,75 +413,121 @@ class Contact extends React.Component {
                       id="subject"
                       placeholder="Assunto"
                       required
+                      value={inputs.subject}
+                      onChange={handleChange}
                     />
                   </FormGroup>
                   <FormGroup>
                     <TextArea
                       name="message"
-                      placeholder="Mensagem"
+                      id="message"
+                      placeholder="Sua mensagem"
                       required
+                      value={inputs.message}
+                      onChange={handleChange}
                     ></TextArea>
                   </FormGroup>
                   <FormGroup>
-                    <SubmitButton type="submit">
-                      Enviar Mensagem
+                    <SubmitButton 
+                      type="submit" 
+                      disabled={formStatus.submitting}
+                    >
+                      {formStatus.submitting ? 'Enviando...' : (
+                        <>
+                          <FontAwesomeIcon icon={faPaperPlane} />
+                          Enviar Mensagem
+                        </>
+                      )}
                     </SubmitButton>
                   </FormGroup>
                 </Form>
-              </Column>
-              <Column>
-                <Title>Entrar em contato</Title>
-                <LeadText>
-                  Deixe seu recado, ou mande um e-mail:{" "}
-                  <a href="mailto:carlosf.duarte8@gmail.com">
-                    carlosf.duarte8@gmail.com
+              )}
+            </Column>
+            <Column>
+              <Title>Informações de Contato</Title>
+              <LeadText>
+                Estou disponível para projetos freelance, oportunidades de trabalho ou qualquer consulta que você possa ter.
+                Sinta-se à vontade para entrar em contato através dos canais abaixo:
+              </LeadText>
+              
+              <ContactInfo>
+                <ContactItem>
+                  <FontAwesomeIcon icon={faEnvelope} />
+                  <a href="mailto:carlosf.duarte8@gmail.com">carlosf.duarte8@gmail.com</a>
+                </ContactItem>
+                <ContactItem>
+                  <FontAwesomeIcon icon={faWhatsapp} />
+                  <a href="https://api.whatsapp.com/send?1=pt_BR&phone=5561998329655" target="_blank" rel="noopener noreferrer">
+                    +55 (61) 99832-9655
                   </a>
-                  .
-                  <br />
-                  Basta preencher o formulário ou enviar-me um e-mail.
-                </LeadText>
-                <SocialLinks>
-                  <SocialItem>
-                    <SocialLink
-                      href="https://github.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                </ContactItem>
+              </ContactInfo>
+              
+              <Title>Redes Sociais</Title>
+              <SocialLinks>
+                <SocialItem>
+                  <SocialLink
+                    href="https://github.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SocialItemWrapper>
                       <IconCircle>
                         <FontAwesomeIcon icon={faGithub} />
                       </IconCircle>
-                    </SocialLink>
-                  </SocialItem>
-                  <SocialItem>
-                    <SocialLink
-                      href="https://linkedin.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                      <SocialLabel>GitHub</SocialLabel>
+                    </SocialItemWrapper>
+                  </SocialLink>
+                </SocialItem>
+                <SocialItem>
+                  <SocialLink
+                    href="https://linkedin.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SocialItemWrapper>
                       <IconCircle>
                         <FontAwesomeIcon icon={faLinkedin} />
                       </IconCircle>
-                    </SocialLink>
-                  </SocialItem>
-                  <SocialItem>
-                    <SocialLink
-                      href="mailto:carlosf.duarte8@gmail.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                      <SocialLabel>LinkedIn</SocialLabel>
+                    </SocialItemWrapper>
+                  </SocialLink>
+                </SocialItem>
+                <SocialItem>
+                  <SocialLink
+                    href="mailto:carlosf.duarte8@gmail.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SocialItemWrapper>
                       <IconCircle>
                         <FontAwesomeIcon icon={faEnvelope} />
                       </IconCircle>
-                    </SocialLink>
-                  </SocialItem>
-                </SocialLinks>
-              </Column>
-            </FlexRow>
-          </ContentBox>
-        </Container>
-      </ContactSection>
-    );
-  }
-}
+                      <SocialLabel>Email</SocialLabel>
+                    </SocialItemWrapper>
+                  </SocialLink>
+                </SocialItem>
+                <SocialItem>
+                  <SocialLink
+                    href="https://api.whatsapp.com/send?1=pt_BR&phone=5561998329655"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SocialItemWrapper>
+                      <IconCircle>
+                        <FontAwesomeIcon icon={faWhatsapp} />
+                      </IconCircle>
+                      <SocialLabel>WhatsApp</SocialLabel>
+                    </SocialItemWrapper>
+                  </SocialLink>
+                </SocialItem>
+              </SocialLinks>
+            </Column>
+          </FlexRow>
+        </ContentBox>
+      </Container>
+    </ContactSection>
+  );
+};
 
 export default Contact;
