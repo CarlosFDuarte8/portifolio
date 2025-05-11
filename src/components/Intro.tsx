@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css, createGlobalStyle } from "styled-components"; // Adicionando createGlobalStyle
 import Typed from "react-typed";
 
 // Animações para os elementos
@@ -58,9 +58,17 @@ const floatObject = keyframes`
   100% { transform: translateY(0) rotate(0deg); }
 `;
 
-const comet = keyframes`
+const pulseScale = keyframes`
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+`;
+
+// Cometa atravessando a tela diagonalmente - direção personalizada
+const cometMove = (startX: string, startY: string, endX: string, endY: string) => keyframes`
   0% {
-    transform: translateX(-100px) translateY(-100px);
+    top: ${startY};
+    left: ${startX};
     opacity: 0;
   }
   10% {
@@ -70,7 +78,8 @@ const comet = keyframes`
     opacity: 1;
   }
   100% {
-    transform: translateX(calc(100vw + 100px)) translateY(calc(100vh + 100px));
+    top: ${endY};
+    left: ${endX};
     opacity: 0;
   }
 `;
@@ -78,6 +87,41 @@ const comet = keyframes`
 const orbitAroundCenter = keyframes`
   0% { transform: rotate(0deg) translateX(150px) rotate(0deg); }
   100% { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
+`;
+
+// Keyframe para explosão de supernova
+const supernovaExplosion = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 0;
+    box-shadow: 0 0 0px 0px rgba(255, 255, 255, 0);
+    filter: blur(0px);
+  }
+  1% {
+    opacity: 1;
+  }
+  10% {
+    transform: scale(50);
+    opacity: 0.8;
+    box-shadow: 0 0 30px 15px rgba(255, 206, 135, 0.6);
+    filter: blur(2px);
+  }
+  20% {
+    transform: scale(100);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(150);
+    opacity: 0.2;
+    box-shadow: 0 0 40px 20px rgba(255, 170, 59, 0.3);
+    filter: blur(4px);
+  }
+  100% {
+    transform: scale(200);
+    opacity: 0;
+    box-shadow: 0 0 50px 25px rgba(255, 170, 59, 0);
+    filter: blur(6px);
+  }
 `;
 
 // Interfaces para os componentes estilizados personalizados
@@ -94,6 +138,8 @@ interface GalaxyProps {
   right?: string;
   left?: string;
   scale?: number;
+  rotationDuration?: string;
+  rotationDirection?: string;
 }
 
 interface ShootingStarProps {
@@ -110,6 +156,28 @@ interface PlanetProps {
   delay?: string;
   color?: string;
   distance?: string;
+}
+
+interface CometProps {
+  duration?: string;
+  delay?: string;
+  startX?: string;
+  startY?: string;
+  endX?: string;
+  endY?: string;
+  color?: string;
+  size?: string;
+  tailLength?: string;
+}
+
+interface SupernovaProps {
+  top?: string;
+  left?: string;
+  delay?: string;
+}
+
+interface ButtonProps {
+  primary?: boolean;
 }
 
 // Componentes estilizados
@@ -248,7 +316,8 @@ const Galaxy = styled.div<GalaxyProps>`
   transform: scale(${props => props.scale || 1});
   filter: blur(5px);
   opacity: 0.7;
-  animation: ${rotateGalaxy} 200s linear infinite;
+  animation: ${rotateGalaxy} ${props => props.rotationDuration || '200s'} linear infinite;
+  animation-direction: ${props => props.rotationDirection || 'normal'};
   z-index: 1;
   
   &:before {
@@ -273,7 +342,7 @@ const ShootingStar = styled.div<ShootingStarProps>`
   position: absolute;
   width: 150px;
   height: 1px;
-  transform-origin: right;
+  transform-origin: left;
   background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 255, 255, 0.4), #ffffff);
   top: ${props => props.top || '20%'};
   left: ${props => props.left || '30%'};
@@ -294,30 +363,53 @@ const ShootingStar = styled.div<ShootingStarProps>`
   }
 `;
 
-// Cometa com cauda
-const CometElement = styled.div`
+// Cometa com cauda - versão melhorada com trajetória personalizada
+const CometElement = styled.div<CometProps>`
   position: absolute;
-  width: 300px;
-  height: 2px;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(60, 170, 255, 0.5), rgba(120, 200, 255, 1));
+  width: ${props => props.tailLength || '300px'};
+  height: ${props => props.size || '2px'};
+  background: linear-gradient(to right, 
+    rgba(0, 0, 0, 0), 
+    ${props => props.color ? `${props.color.replace('1', '0.5')}` : 'rgba(60, 170, 255, 0.5)'}, 
+    ${props => props.color || 'rgba(120, 200, 255, 1)'}
+  );
   border-radius: 50%;
   filter: blur(1px);
-  transform-origin: left;
-  transform: rotate(35deg);
-  animation: ${comet} 20s cubic-bezier(0.36, 0.11, 0.89, 0.32) infinite;
   z-index: 1;
+  animation: ${props => css`${cometMove(
+    props.startX || '-5%', 
+    props.startY || '10%', 
+    props.endX || '105%', 
+    props.endY || '60%'
+  )} ${props.duration || '15s'} ${props.delay || '0s'} infinite ease-out`};
   
   &:after {
     content: '';
     position: absolute;
     top: -1px;
     right: 0;
-    width: 8px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.8);
+    width: ${props => `calc(${props.size || '2px'} * 4)`};
+    height: ${props => `calc(${props.size || '2px'} * 2)`};
+    background: ${props => props.color || 'rgba(255, 255, 255, 0.8)'};
     border-radius: 50%;
-    box-shadow: 0 0 10px 4px rgba(120, 220, 255, 0.6);
+    box-shadow: 0 0 10px 4px ${props => props.color ? `${props.color.replace('1', '0.6')}` : 'rgba(120, 220, 255, 0.6)'};
   }
+`;
+
+// Supernova ocasional - agora com a animação aplicada diretamente no styled-component
+const Supernova = styled.div<SupernovaProps & { isActive?: boolean }>`
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 50%;
+  top: ${props => props.top || '40%'};
+  left: ${props => props.left || '60%'};
+  opacity: 0;
+  filter: blur(0px);
+  z-index: 2;
+  box-shadow: 0 0 0px 0px rgba(255, 255, 255, 0);
+  animation: ${props => props.isActive ? css`${supernovaExplosion} 5s forwards` : 'none'};
 `;
 
 // Sistema solar decorativo
@@ -340,6 +432,19 @@ const Sun = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 20px rgba(255, 207, 64, 0.7);
+  
+  &:after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 207, 64, 0.3) 0%, rgba(255, 142, 15, 0) 70%);
+    filter: blur(5px);
+    animation: ${pulseGlow} 5s infinite;
+  }
 `;
 
 const Planet = styled.div<PlanetProps>`
@@ -364,6 +469,37 @@ const Planet = styled.div<PlanetProps>`
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+  }
+`;
+
+// Anel de asteroides
+const AsteroidBelt = styled.div`
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 3px solid rgba(255, 255, 255, 0.03);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border: 1px dotted rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+  }
+  
+  &:before {
+    transform: rotate(30deg) scale(0.95);
+  }
+  
+  &:after {
+    transform: rotate(-30deg) scale(1.05);
   }
 `;
 
@@ -495,11 +631,6 @@ const Tooltip = styled.span`
   }
 `;
 
-// Interface para os botões com propriedade primary
-interface ButtonProps {
-  primary?: boolean;
-}
-
 const Button = styled.a<ButtonProps>`
   display: inline-block;
   background-color: transparent;
@@ -551,18 +682,39 @@ const PrimaryButton = styled(Button)`
 `;
 
 const Intro = () => {
-  // Estado para controlar a posição da estrela cadente
+  // Estado para controlar animações e efeitos especiais
   const [shootingStar1Visible, setShootingStar1Visible] = useState(true);
   const [shootingStar2Visible, setShootingStar2Visible] = useState(false);
+  const [supernovaActive, setSupernovaActive] = useState(false);
+  const [supernovaPosition, setSupernovaPosition] = useState({ top: '30%', left: '40%' });
 
   // Alternar a visibilidade das estrelas cadentes para dar um efeito mais realista
   useEffect(() => {
-    const interval = setInterval(() => {
+    const shootingStarInterval = setInterval(() => {
       setShootingStar1Visible(prev => !prev);
       setShootingStar2Visible(prev => !prev);
     }, 12000);
     
-    return () => clearInterval(interval);
+    // Criar uma supernova ocasional
+    const supernovaInterval = setInterval(() => {
+      // Posição aleatória para a supernova
+      const top = `${Math.random() * 70 + 10}%`;
+      const left = `${Math.random() * 70 + 10}%`;
+      setSupernovaPosition({ top, left });
+      
+      // Ativar a supernova
+      setSupernovaActive(true);
+      
+      // Desativar após a animação
+      setTimeout(() => {
+        setSupernovaActive(false);
+      }, 5000);
+    }, 30000);
+    
+    return () => {
+      clearInterval(shootingStarInterval);
+      clearInterval(supernovaInterval);
+    };
   }, []);
 
   return (
@@ -579,9 +731,43 @@ const Intro = () => {
       <Nebula top="25%" left="35%" scale={1.3} duration="22s" color="rgba(0, 200, 100, 0.2)" />
       
       {/* Galáxias espirais */}
-      <Galaxy top="70%" right="15%" />
-      <Galaxy top="20%" right="65%" scale={0.8} />
-      <Galaxy top="45%" left="15%" scale={0.6} />
+      <Galaxy top="70%" right="15%" rotationDuration="180s" />
+      <Galaxy top="20%" right="65%" scale={0.8} rotationDuration="220s" rotationDirection="reverse" />
+      <Galaxy top="45%" left="15%" scale={0.6} rotationDuration="150s" />
+      
+      {/* Cometas atravessando a tela em diferentes trajetórias */}
+      <CometElement 
+        startX="-5%" 
+        startY="10%" 
+        endX="105%" 
+        endY="60%" 
+        duration="20s" 
+        color="rgba(120, 200, 255, 1)" 
+        size="2px"
+        tailLength="300px"
+      />
+      <CometElement 
+        startX="105%" 
+        startY="25%" 
+        endX="-5%" 
+        endY="85%" 
+        duration="25s" 
+        delay="12s" 
+        color="rgba(255, 160, 220, 1)" 
+        size="3px"
+        tailLength="280px"
+      />
+      <CometElement 
+        startX="30%" 
+        startY="-5%" 
+        endX="70%" 
+        endY="105%" 
+        duration="15s" 
+        delay="8s" 
+        color="rgba(100, 255, 180, 1)" 
+        size="1.5px"
+        tailLength="250px"
+      />
       
       {/* Estrelas cadentes condicionais */}
       {shootingStar1Visible && (
@@ -598,8 +784,14 @@ const Intro = () => {
         </>
       )}
       
-      {/* Cometas ocasionais */}
-      <CometElement />
+      {/* Supernova ocasional - corrigida */}
+      {supernovaActive && (
+        <Supernova 
+          top={supernovaPosition.top} 
+          left={supernovaPosition.left} 
+          isActive={true}
+        />
+      )}
       
       {/* Sistema solar decorativo */}
       <SolarSystem>
@@ -608,6 +800,7 @@ const Intro = () => {
         <Planet size="8px" orbitDuration="15s" color="#e74c3c" distance="60px" delay="2s" />
         <Planet size="5px" orbitDuration="20s" color="#2ecc71" distance="80px" delay="5s" />
         <Planet size="10px" orbitDuration="25s" color="#f39c12" distance="100px" delay="8s" />
+        <AsteroidBelt />
       </SolarSystem>
       
       {/* Elementos flutuantes */}
