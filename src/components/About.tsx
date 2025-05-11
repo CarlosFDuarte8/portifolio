@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import java from '../img/java.png';
-import react from '../logo.svg';
 // Import Font Awesome for technology icons where we don't have images
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -43,17 +41,6 @@ const ContentBox = styled.div`
   border-radius: ${props => props.theme.borderRadius.medium};
   box-shadow: ${props => props.theme.boxShadow.medium};
   padding: ${props => props.theme.spacing.xl};
-`;
-
-const FlexRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: ${props => props.theme.spacing.xl};
-  
-  @media (max-width: ${props => props.theme.breakpoints.md}) {
-    justify-content: center;
-  }
 `;
 
 const SkillCard = styled.div`

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, { keyframes, css, createGlobalStyle } from "styled-components"; // Adicionando createGlobalStyle
+import styled, { keyframes, css } from "styled-components"; // Removing createGlobalStyle
 import Typed from "react-typed";
 import { useTranslation } from 'react-i18next'; // Importando hook de tradução
 
@@ -57,12 +57,6 @@ const floatObject = keyframes`
   50% { transform: translateY(0) rotate(0deg); }
   75% { transform: translateY(10px) rotate(-2deg); }
   100% { transform: translateY(0) rotate(0deg); }
-`;
-
-const pulseScale = keyframes`
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
 `;
 
 // Cometa atravessando a tela diagonalmente - direção personalizada
