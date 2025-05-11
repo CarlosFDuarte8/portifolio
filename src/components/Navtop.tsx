@@ -281,6 +281,9 @@ class Navtop extends Component<{}, NavtopState> {
               <NavLink href="#about" active={activeSection === 'about'} onClick={this.handleLinkClick}>Sobre</NavLink>
             </NavItem>
             <NavItem>
+              <NavLink href="#projects" active={activeSection === 'projects'} onClick={this.handleLinkClick}>Projetos</NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink href="#contact" active={activeSection === 'contact'} onClick={this.handleLinkClick}>Contato</NavLink>
             </NavItem>
           </NavbarNav>
