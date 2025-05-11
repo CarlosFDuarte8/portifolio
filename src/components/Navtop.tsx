@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import perfil from '../img/perfil.png';
 
 interface NavbarContainerProps {
@@ -80,31 +80,57 @@ const NavbarNav = styled.ul`
 
 const NavItem = styled.li`
   margin: 0 ${props => props.theme.spacing.md};
+  position: relative;
 
   @media (max-width: ${props => props.theme.breakpoints.md}) {
     margin: ${props => props.theme.spacing.sm} 0;
   }
 `;
 
-const NavLink = styled.a`
-  color: ${props => props.theme.colors.dark};
+interface NavLinkProps {
+  active: boolean;
+}
+
+const lineAnimation = keyframes`
+  0% { width: 0; left: 50%; }
+  100% { width: 100%; left: 0; }
+`;
+
+const NavLink = styled.a<NavLinkProps>`
+  color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.dark};
   text-decoration: none;
   font-weight: 500;
   padding: ${props => props.theme.spacing.sm};
   transition: color ${props => props.theme.transitions.fast};
+  position: relative;
+  display: inline-block;
 
   &:hover {
     color: ${props => props.theme.colors.primary};
   }
 
-  &.active {
-    color: ${props => props.theme.colors.primary};
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: ${props => props.active ? '0' : '50%'};
+    width: ${props => props.active ? '100%' : '0'};
+    height: 2px;
+    background-color: ${props => props.theme.colors.primary};
+    transition: all ${props => props.theme.transitions.fast};
+    ${props => props.active && css`animation: ${lineAnimation} 0.3s ease-in-out;`}
+  }
+
+  &:hover::after {
+    width: 100%;
+    left: 0;
   }
 `;
 
 interface NavtopState {
   isOpen: boolean;
   scrolled: boolean;
+  activeSection: string;
 }
 
 class Navtop extends Component<{}, NavtopState> {
@@ -112,17 +138,57 @@ class Navtop extends Component<{}, NavtopState> {
     super(props);
     this.state = {
       isOpen: false,
-      scrolled: false
+      scrolled: false,
+      activeSection: 'home'
     };
   }
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
+    
+    // Configuramos o observer com um pequeno atraso para garantir que 
+    // os elementos já estejam renderizados
+    setTimeout(this.setupIntersectionObserver, 500);
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
   }
+
+  setupIntersectionObserver = () => {
+    try {
+      // Configurando o observador de interseção para monitorar quais seções estão visíveis
+      const options = {
+        root: null, // viewport
+        rootMargin: '-50% 0px', // Ativar quando a seção estiver a 50% visível
+        threshold: 0 // Disparar quando qualquer parte estiver visível
+      };
+
+      const observer = new IntersectionObserver(this.handleIntersection, options);
+      
+      // Observando todas as seções
+      const sections = Array.from(document.querySelectorAll('section[id], div[id="home"]'));
+      
+      if (sections.length > 0) {
+        sections.forEach(section => {
+          observer.observe(section);
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao configurar IntersectionObserver:", error);
+    }
+  };
+
+  handleIntersection = (entries: IntersectionObserverEntry[]) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        if (id) {
+          this.setState({ activeSection: id });
+        }
+      }
+    });
+  };
 
   handleScroll = () => {
     if (window.scrollY > 50) {
@@ -139,24 +205,26 @@ class Navtop extends Component<{}, NavtopState> {
   };
 
   render() {
+    const { scrolled, isOpen, activeSection } = this.state;
+    
     return (
-      <NavbarContainer scrolled={this.state.scrolled}>
+      <NavbarContainer scrolled={scrolled}>
         <Logo src={perfil} alt="Logo" />
         <MenuToggle onClick={this.toggleMenu}>
           <ToggleBar />
           <ToggleBar />
           <ToggleBar />
         </MenuToggle>
-        <NavbarCollapse isOpen={this.state.isOpen}>
+        <NavbarCollapse isOpen={isOpen}>
           <NavbarNav>
             <NavItem>
-              <NavLink href="#">Home</NavLink>
+              <NavLink href="#home" active={activeSection === 'home'}>Home</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#about">Sobre</NavLink>
+              <NavLink href="#about" active={activeSection === 'about'}>Sobre</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#contact">Contato</NavLink>
+              <NavLink href="#contact" active={activeSection === 'contact'}>Contato</NavLink>
             </NavItem>
           </NavbarNav>
         </NavbarCollapse>
