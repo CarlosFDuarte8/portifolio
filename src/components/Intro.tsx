@@ -113,7 +113,7 @@ const Button = styled.a`
   background-color: ${props => props.theme.colors.primary};
   color: ${props => props.theme.colors.white};
   padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.xl};
-  border-radius: ${props => props.theme.borderRadius.circle};
+  border-radius: ${props => props.theme.borderRadius.medium};
   text-decoration: none;
   font-weight: 600;
   transition: all ${props => props.theme.transitions.medium};
