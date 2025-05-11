@@ -1,170 +1,291 @@
 import React from "react";
+import styled from "styled-components";
 import imageOverlay from "../img/earth.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
+// Componentes estilizados
+const ContactSection = styled.section`
+  position: relative;
+  padding: ${props => props.theme.spacing.xxl} 0;
+  background-image: url(${imageOverlay});
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+  }
+`;
+
+const Container = styled.div`
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+`;
+
+const ContentBox = styled.div`
+  background-color: ${props => props.theme.colors.white};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  box-shadow: ${props => props.theme.boxShadow.medium};
+  padding: ${props => props.theme.spacing.xl};
+`;
+
+const FlexRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    flex-direction: column;
+  }
+`;
+
+const Column = styled.div`
+  flex: 1;
+  padding: ${props => props.theme.spacing.md};
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    padding: ${props => props.theme.spacing.md} 0;
+  }
+`;
+
+const Title = styled.h5`
+  font-size: ${props => props.theme.fontSizes.xlarge};
+  margin-bottom: ${props => props.theme.spacing.lg};
+  position: relative;
+  padding-bottom: ${props => props.theme.spacing.sm};
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: ${props => props.theme.colors.primary};
+  }
+`;
+
+const Form = styled.form`
+  width: 100%;
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: ${props => props.theme.spacing.lg};
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: ${props => props.theme.spacing.md};
+  border: 1px solid #ced4da;
+  border-radius: ${props => props.theme.borderRadius.small};
+  font-size: ${props => props.theme.fontSizes.medium};
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+`;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  padding: ${props => props.theme.spacing.md};
+  border: 1px solid #ced4da;
+  border-radius: ${props => props.theme.borderRadius.small};
+  font-size: ${props => props.theme.fontSizes.medium};
+  min-height: 150px;
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+`;
+
+const SubmitButton = styled.button`
+  background-color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.white};
+  padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.xl};
+  border: none;
+  border-radius: ${props => props.theme.borderRadius.circle};
+  font-size: ${props => props.theme.fontSizes.medium};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all ${props => props.theme.transitions.medium};
+
+  &:hover {
+    background-color: ${props => props.theme.colors.primaryDark};
+    transform: translateY(-3px);
+    box-shadow: ${props => props.theme.boxShadow.large};
+  }
+
+  &:active {
+    transform: translateY(-1px);
+    box-shadow: ${props => props.theme.boxShadow.medium};
+  }
+`;
+
+const LeadText = styled.p`
+  font-size: ${props => props.theme.fontSizes.large};
+  line-height: 1.6;
+  margin-bottom: ${props => props.theme.spacing.xl};
+
+  a {
+    color: ${props => props.theme.colors.primary};
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const SocialLinks = styled.ul`
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const SocialItem = styled.li`
+  margin-right: ${props => props.theme.spacing.md};
+`;
+
+const SocialLink = styled.a`
+  display: inline-block;
+  text-decoration: none;
+`;
+
+const IconCircle = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: ${props => props.theme.borderRadius.circle};
+  background-color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.white};
+  font-size: ${props => props.theme.fontSizes.xlarge};
+  transition: all ${props => props.theme.transitions.medium};
+
+  &:hover {
+    background-color: ${props => props.theme.colors.primaryDark};
+    transform: scale(1.1);
+  }
+`;
+
 class Contact extends React.Component {
   render() {
     return (
-      <section
-        className="paralax-mf footer-paralax bg-image sect-mt4 route"
-        style={{ backgroundImage: "url(" + imageOverlay + ")" }}
-      >
-        <div className="overlay-mf"></div>
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="contact-mf">
-                <div id="contact" className="box-shadow-full">
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="title-box-2">
-                        <h5 className="title-left"> Preencha o formulario</h5>
-                      </div>
-                      <div>
-                        <form
-                          action="https://formspree.io/f/mpzovejy"
-                          method="POST"
-                          className="contactForm"
-                        >
-                          <div id="sendmessage">
-                            Sua mensagem fou recebida, logo entrarei em contato.
-                            Obrigado!
-                          </div>
-                          <div id="errormessage"></div>
-                          <div className="row">
-                            <div className="col-md-12 mb-3">
-                              <div className="form-group">
-                                <input
-                                  type="text"
-                                  name="name"
-                                  className="form-control"
-                                  id="name"
-                                  placeholder="Seu nome"
-                                  data-rule="minlen:4"
-                                  data-msg="Entre com seu nome, por favor"
-                                />
-                                <div className="validation"></div>
-                              </div>
-                            </div>
-                            <div className="col-md-12 mb-3">
-                              <div className="form-group">
-                                <input
-                                  type="email"
-                                  className="form-control"
-                                  name="email"
-                                  id="email"
-                                  placeholder="Seu e-mail"
-                                  data-rule="email"
-                                  data-msg="Por favor, digite seu e-mail."
-                                />
-                                <div className="validation"></div>
-                              </div>
-                            </div>
-                            <div className="col-md-12 mb-3">
-                              <div className="form-group">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  name="subject"
-                                  id="subject"
-                                  placeholder="Assunto"
-                                  data-rule="minlen:4"
-                                  data-msg="Ops... Coloque um assunto, por favor!"
-                                />
-                                <div className="validation"></div>
-                              </div>
-                            </div>
-                            <div className="col-md-12 mb-3">
-                              <div className="form-group">
-                                <textarea
-                                  className="form-control"
-                                  name="message"
-                                  data-rule="required"
-                                  data-msg="Ops, Não deixe de escrever uma mensagem, grato!"
-                                  placeholder="Mensagem"
-                                ></textarea>
-                                <div className="validation"></div>
-                              </div>
-                            </div>
-                            <div className="col-md-12">
-                              <button
-                                type="submit"
-                                className="button button-a button-big button-rouded"
-                              >
-                                Enviar Mensagem
-                              </button>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="title-box-2 pt-4 pt-md-0">
-                        <h5 className="title-left">Entrar em contato</h5>
-                      </div>
-                      <div className="more-info">
-                        <p className="lead">
-                          Deixe seu recado, ou mande um e-mail:{" "}
-                          <a href="mailto:carlosf.duarte8@gmail.com">
-                            carlosf.duarte8@gmail.com
-                          </a>
-                          .
-                          <br />
-                          Basta preencher o formulário ou enviar-me um e-mail.
-                        </p>
-                        {/* <!-- <ul class="list-ico">
-                                <li><span class="ion-ios-location"></span> 329 WASHINGTON ST BOSTON, MA 02108</li>
-                                <li><span class="ion-ios-telephone"></span> (617) 557-0089</li>
-                                <li><span class="ion-email"></span> contact@example.com</li>
-                                </ul> --> */}
-                      </div>
-                      <div className="socials">
-                        <ul>
-                          <li>
-                            <a
-                              href=""
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <span className="ico-circle">
-                                <FontAwesomeIcon icon={faGithub} />
-                              </span>
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href=""
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <span className="ico-circle">
-                                <FontAwesomeIcon icon={faLinkedin} />
-                              </span>
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href=""
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <span className="ico-circle">
-                                <FontAwesomeIcon icon={faEnvelope} />
-                              </span>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ContactSection id="contact">
+        <Container>
+          <ContentBox>
+            <FlexRow>
+              <Column>
+                <Title>Preencha o formulário</Title>
+                <Form action="https://formspree.io/f/mpzovejy" method="POST">
+                  <FormGroup>
+                    <Input
+                      type="text"
+                      name="name"
+                      id="name"
+                      placeholder="Seu nome"
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Input
+                      type="email"
+                      name="email"
+                      id="email"
+                      placeholder="Seu e-mail"
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Input
+                      type="text"
+                      name="subject"
+                      id="subject"
+                      placeholder="Assunto"
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <TextArea
+                      name="message"
+                      placeholder="Mensagem"
+                      required
+                    ></TextArea>
+                  </FormGroup>
+                  <FormGroup>
+                    <SubmitButton type="submit">
+                      Enviar Mensagem
+                    </SubmitButton>
+                  </FormGroup>
+                </Form>
+              </Column>
+              <Column>
+                <Title>Entrar em contato</Title>
+                <LeadText>
+                  Deixe seu recado, ou mande um e-mail:{" "}
+                  <a href="mailto:carlosf.duarte8@gmail.com">
+                    carlosf.duarte8@gmail.com
+                  </a>
+                  .
+                  <br />
+                  Basta preencher o formulário ou enviar-me um e-mail.
+                </LeadText>
+                <SocialLinks>
+                  <SocialItem>
+                    <SocialLink
+                      href="https://github.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <IconCircle>
+                        <FontAwesomeIcon icon={faGithub} />
+                      </IconCircle>
+                    </SocialLink>
+                  </SocialItem>
+                  <SocialItem>
+                    <SocialLink
+                      href="https://linkedin.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <IconCircle>
+                        <FontAwesomeIcon icon={faLinkedin} />
+                      </IconCircle>
+                    </SocialLink>
+                  </SocialItem>
+                  <SocialItem>
+                    <SocialLink
+                      href="mailto:carlosf.duarte8@gmail.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <IconCircle>
+                        <FontAwesomeIcon icon={faEnvelope} />
+                      </IconCircle>
+                    </SocialLink>
+                  </SocialItem>
+                </SocialLinks>
+              </Column>
+            </FlexRow>
+          </ContentBox>
+        </Container>
+      </ContactSection>
     );
   }
 }
