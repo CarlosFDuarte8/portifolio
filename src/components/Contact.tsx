@@ -467,7 +467,7 @@ const Contact = () => {
               <SocialLinks>
                 <SocialItem>
                   <SocialLink
-                    href="https://github.com"
+                    href="https://github.com/CarlosFDuarte8"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

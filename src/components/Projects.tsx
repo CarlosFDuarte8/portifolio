@@ -235,7 +235,7 @@ const Projects: React.FC = () => {
       image: "/logo512.png",
       tags: ["React", "TypeScript", "Styled Components", "Responsive Design"],
       links: {
-        github: "https://github.com",
+        github: "https://github.com/CarlosFDuarte8/portifolio",
         live: "#"
       }
     },
