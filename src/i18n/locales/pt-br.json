@@ -39,9 +39,9 @@
         "title": "Portfólio Pessoal",
         "description": "Meu site de portfólio desenvolvido com React, TypeScript e Styled Components. Um projeto que demonstra minhas habilidades e projetos recentes."
       },
-      "ecommerce": {
-        "title": "Loja Virtual",
-        "description": "Plataforma de e-commerce completa com painel administrativo, pagamentos online e gestão de estoque. Criada com Node.js no backend e React no frontend."
+      "appnewssenado": {
+        "title": "Portal de Notícias",
+        "description": "Um aplicativo React Native para leitura de notícias com funcionalidades offline, favoritos e interface moderna."
       }
     }
   },

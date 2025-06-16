@@ -39,9 +39,9 @@
         "title": "Personal Portfolio",
         "description": "My portfolio website developed with React, TypeScript and Styled Components. A project that showcases my skills and recent projects."
       },
-      "ecommerce": {
-        "title": "Online Store",
-        "description": "Complete e-commerce platform with admin panel, online payments and inventory management. Created with Node.js on the backend and React on the frontend."
+      "appnewssenado": {
+        "title": "News Portal",
+        "description": "A React Native news reader app with offline functionality, bookmarks, and a modern interface."
       }
     }
   },

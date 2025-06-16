@@ -239,14 +239,14 @@ const Projects: React.FC = () => {
       }
     },
     {
-      id: "ecommerce",
-      title: t('projects.projectList.ecommerce.title'),
-      description: t('projects.projectList.ecommerce.description'),
-      image: "https://via.placeholder.com/400x200?text=E-commerce+Project",
-      tags: ["Node.js", "React", "MongoDB", "Express", "Redux"],
+      id: "appnewssenado",
+      title: t('projects.projectList.appnewssenado.title'),
+      description: t('projects.projectList.appnewssenado.description'),
+      image: require("../assets/banner-appnews.jpg"),
+      tags: ["React Native", "Expo", "Context API",],
       links: {
-        github: "https://github.com",
-        live: "#"
+        github: "https://github.com/CarlosFDuarte8/portal-de-noticias",
+        live: "https://expo.dev/accounts/carlosduarte8/projects/portal-de-noticias/builds/5d6fc7f0-1e6a-4c0e-8978-e6868202f93e"
       }
     }
   ];
